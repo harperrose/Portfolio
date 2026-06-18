@@ -39,6 +39,12 @@ panels:
       - _template: paragraph
         text: >-
           We began by interviewing designers about their fabric sourcing process and workflow pain points. Through this, we uncovered that Material Bank's strongest tools often caused confusion instead of clarity.
+
+          A competitor's digital moodboarding feature caters to architectural and interior workflows—helping designers visualize materials in context and communicate spatial intent before committing to samples. Without Material Banks built in shopping this is less of a journey.
+
+          Many Material Bank partners are regional importers who rebrand products, obscuring their origins. This practice often results in designers specifying materials from distant suppliers—even when identical options are available locally—leading to unnecessary shipping, costs, and environmental impact.
+
+          Looking at users needs generated many paths forward that were narrowed down with a combined MoSCoW and RICE ranking system and are summarized below.
       - _template: doubleImage
         left: /images/Sitemap-1.webp
         right: /images/Sitemap-2.webp
@@ -51,4 +57,7 @@ panels:
         src: /images/Userflow-1.webp
       - _template: image
         src: /images/Feature-Roadmap-Graph.webp
+      - _template: doubleImage
+        left: /images/Screenshot-2025-02-19-at-10.05.59-AM.webp
+        right: /images/MB-Frame-1.webp
 ---

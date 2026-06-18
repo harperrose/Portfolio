@@ -2,6 +2,12 @@
   "infoHeroTitle": "I love the web, understanding problems, and you.",
   "infoHeroImage": "/images/baby.webp",
   "contactHeading": "I hope our paths cross again.",
+  "colophonText": "Scrolling is supplemented by Lenis created by Studio Freight. Type is set in Riccione Serial from Softworks and Switzer by ITF.",
+  "colophonLinkText": "a family tree website.",
+  "colophonLinkUrl": "https://web.archive.org/web/20120629201638/http://harperdaniel.com/",
+  "copyrightText": "Copyright 2026",
+  "arenaUrl": "https://www.are.na/harper-daniel/channels",
+  "contactSuccessMessage": "Thanks! Ill be in touch soon.",
   "capabilities": [
     { "label": "Product Design", "anchorId": "product-design" },
     { "label": "Digital Design", "anchorId": "web-development" },

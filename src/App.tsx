@@ -14,7 +14,7 @@ function CaseStudyRoute() {
     return <Navigate to="/" replace />;
   }
 
-  return <CaseStudyPage project={project} allProjects={content.projects} />;
+  return <CaseStudyPage project={project} allProjects={content.projects} site={content.site} />;
 }
 
 function App() {

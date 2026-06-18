@@ -53,6 +53,37 @@ export default defineConfig({
             label: "Contact Section Heading",
           },
           {
+            type: "string",
+            name: "colophonText",
+            label: "Colophon Text",
+            ui: { component: "textarea" },
+          },
+          {
+            type: "string",
+            name: "colophonLinkText",
+            label: "Colophon Link Text",
+          },
+          {
+            type: "string",
+            name: "colophonLinkUrl",
+            label: "Colophon Link URL",
+          },
+          {
+            type: "string",
+            name: "copyrightText",
+            label: "Copyright Text",
+          },
+          {
+            type: "string",
+            name: "arenaUrl",
+            label: "Are.na Profile URL",
+          },
+          {
+            type: "string",
+            name: "contactSuccessMessage",
+            label: "Contact Form Success Message",
+          },
+          {
             type: "object",
             name: "capabilities",
             label: "Navigation Capabilities",

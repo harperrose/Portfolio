@@ -80,8 +80,17 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
               Colophon
             </a>
             <div className="navigation-text">
-              Scrolling is supplemented by Lenis created by Studio Freight. Type is set in
-              Riccione Serial from Softworks and Switzer by ITF.
+              {site.colophonText}
+              {site.colophonLinkUrl && site.colophonLinkText ? (
+                <>
+                  <br />
+                  <br />
+                  Before the domain was mine it was{' '}
+                  <a href={site.colophonLinkUrl} className="navigation-text underlined">
+                    {site.colophonLinkText}
+                  </a>
+                </>
+              ) : null}
             </div>
           </div>
           <div className="navigation-item footer">
@@ -104,10 +113,10 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
               Work
             </Link>
             <a href="#" className="navigation-text">
-              Copyright 2026
+              {site.copyrightText}
             </a>
           </div>
-          <ContactForm />
+          <ContactForm arenaUrl={site.arenaUrl} successMessage={site.contactSuccessMessage} />
         </div>
       </section>
     </div>

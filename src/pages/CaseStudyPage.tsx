@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Project } from '../types/content';
+import type { Project, SiteSettings } from '../types/content';
 import { getProjectBySlug, projectUrl } from '../lib/content';
 import PanelRenderer from '../components/PanelRenderer';
 import ContactForm from '../components/ContactForm';
@@ -8,9 +8,10 @@ import ContactForm from '../components/ContactForm';
 type CaseStudyPageProps = {
   project: Project;
   allProjects: Project[];
+  site: SiteSettings;
 };
 
-export default function CaseStudyPage({ project, allProjects }: CaseStudyPageProps) {
+export default function CaseStudyPage({ project, allProjects, site }: CaseStudyPageProps) {
   const [activeTab, setActiveTab] = useState(0);
   const panels = project.panels.length
     ? project.panels
@@ -73,7 +74,22 @@ export default function CaseStudyPage({ project, allProjects }: CaseStudyPagePro
       ) : null}
 
       <div id="1800-contact-me" className="footer-contact div-block-11">
-        <ContactForm />
+        <ContactForm arenaUrl={site.arenaUrl} successMessage={site.contactSuccessMessage} />
+        <div className="navigation-item footer">
+          <a href="#" className="navigation-text centered">
+            Colophon
+          </a>
+          <span className="navigation-text">
+            {site.colophonText}
+            {site.colophonLinkText ? (
+              <>
+                <br />
+                <br />
+                Before the domain was mine it was {site.colophonLinkText}
+              </>
+            ) : null}
+          </span>
+        </div>
       </div>
     </>
   );

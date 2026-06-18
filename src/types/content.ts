@@ -42,6 +42,12 @@ export type SiteSettings = {
   infoHeroTitle: string;
   infoHeroImage?: string;
   contactHeading?: string;
+  colophonText?: string;
+  colophonLinkText?: string;
+  colophonLinkUrl?: string;
+  copyrightText?: string;
+  arenaUrl?: string;
+  contactSuccessMessage?: string;
   capabilities: { label: string; anchorId: string }[];
 };
 

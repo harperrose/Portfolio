@@ -89,7 +89,7 @@ export default function NavGrid({
               {activeProjectQuote}
             </div>
             <div id="hd-contact" className={showQuote ? 'state-off' : 'state-on'}>
-              <ContactForm compact />
+              <ContactForm compact arenaUrl={site.arenaUrl} successMessage={site.contactSuccessMessage} />
             </div>
           </>
         ) : (

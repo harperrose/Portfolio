@@ -25,4 +25,8 @@ items:
     image: /images/MDP-home.jpg
     url: /a-new-site-for-local-photographer
     caseStudy: content/projects/a-new-site-for-local-photographer.md
+  - title: Site for Local Photographer
+    image: /images/BenditoxParadiso-O-01-iPhone.webp
+    url: /site-for-local-photographer
+    caseStudy: content/projects/site-for-local-photographer.md
 ---
