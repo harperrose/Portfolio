@@ -1,0 +1,79 @@
+#hd-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+#hd-scroll {
+  position: absolute;
+  inset: 0 0 120px;
+  overflow: hidden;
+}
+
+#hd-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+}
+
+.hd-spacer {
+  flex: 0 0 auto;
+}
+
+.hd-spacer-lead {
+  width: 35vw;
+}
+
+.hd-spacer-trail {
+  width: 20vw;
+}
+
+.hd-card {
+  flex: 0 0 auto;
+  width: 70vw;
+  max-width: 900px;
+  padding: 0 10px;
+}
+
+.hd-card-link {
+  display: block;
+  text-decoration: none;
+}
+
+.hd-card-image-wrap {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.hd-card-image-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: cover;
+}
+
+#hd-stage #hd-grid {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  #hd-scroll {
+    inset: 0 0 180px;
+  }
+
+  .hd-card {
+    width: 85vw;
+  }
+
+  .hd-spacer-lead {
+    width: 10vw;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "infoHeroTitle": "I love the web, understanding problems, and you.",
+  "infoHeroImage": "/images/baby.webp",
+  "contactHeading": "I hope our paths cross again.",
+  "capabilities": [
+    { "label": "Product Design", "anchorId": "product-design" },
+    { "label": "Digital Design", "anchorId": "web-development" },
+    { "label": "Testing and Optimization", "anchorId": "product-design" },
+    { "label": "Branding & Visual", "anchorId": "branding-visual" },
+    { "label": "Web Development", "anchorId": "web-development" }
+  ]
+}
