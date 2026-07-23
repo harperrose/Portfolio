@@ -7,7 +7,6 @@ summary: An accessible website for a fresh launch of an existing brand and famil
 capabilities:
   - Digital Design
   - Web Development
-order: 5
 nextProject: content/projects/project-hub-for-material-bank.md
 panels:
   - label: Overview

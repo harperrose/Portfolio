@@ -1,42 +1,5 @@
 import type { ContentBlock } from '../types/content';
-
-function BlockRenderer({ block }: { block: ContentBlock }) {
-  switch (block._template) {
-    case 'image':
-      return <img src={block.src} loading="lazy" alt={block.alt ?? ''} className="img" />;
-    case 'paragraph':
-      return (
-        <p
-          className="paragraph on-page"
-          dangerouslySetInnerHTML={{ __html: block.text.replace(/\n/g, '<br>') }}
-        />
-      );
-    case 'doubleImage':
-      return (
-        <div className="double">
-          <img src={block.left} loading="lazy" alt="" className="img double" />
-          <img src={block.right} loading="lazy" alt="" className="img double" />
-        </div>
-      );
-    case 'iframe':
-      return (
-        <div className="w-embed w-iframe">
-          <iframe
-            style={{
-              border: '1px solid rgba(0, 0, 0, 0.1)',
-              width: '100%',
-              height: block.height ?? '60vh',
-            }}
-            src={block.src}
-            allowFullScreen
-            title="Embedded prototype"
-          />
-        </div>
-      );
-    default:
-      return null;
-  }
-}
+import BlockRenderer from './BlockRenderer';
 
 type PanelRendererProps = {
   blocks: ContentBlock[];

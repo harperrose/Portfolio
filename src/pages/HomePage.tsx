@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Lenis from 'lenis';
 import type { Project, SiteSettings } from '../types/content';
+import { CAPABILITIES_LIST } from '../types/content';
+import { buildHomeGallery } from '../lib/homeGallery';
 import { projectUrl } from '../lib/content';
 import NavGrid from '../components/NavGrid';
 
@@ -11,24 +13,60 @@ type HomePageProps = {
 };
 
 export default function HomePage({ projects, site }: HomePageProps) {
+  const navProjects = useMemo(
+    () => [...projects].sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || a.title.localeCompare(b.title)),
+    [projects],
+  );
+
+  const galleryCards = useMemo(() => buildHomeGallery(navProjects), [navProjects]);
+
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const topBarRef = useRef<HTMLElement>(null);
+  const hasScrolledRef = useRef(false);
 
-  const activeProject = projects.find((p) => p.id === activeProjectId);
+  const activeProject = navProjects.find((p) => p.id === activeProjectId);
   const activeCapabilities = activeProject?.capabilities ?? [];
+  const backgroundImage = site.homeBackgroundImage ?? '/images/solace-home.jpg';
+
+  useEffect(() => {
+    document.body.classList.add('home-route', 'body-5');
+    return () => {
+      document.body.classList.remove('home-route', 'body-5');
+    };
+  }, []);
 
   useEffect(() => {
     const scrollEl = scrollRef.current;
     const trackEl = trackRef.current;
     if (!scrollEl || !trackEl) return;
 
+    const setLayoutMetrics = () => {
+      const gridEl = document.getElementById('hd-grid');
+      const topBarEl = topBarRef.current;
+      const topBarBottom = topBarEl ? Math.ceil(topBarEl.getBoundingClientRect().bottom) : 52;
+      document.documentElement.style.setProperty('--home-top-offset', `${topBarBottom}px`);
+
+      if (!gridEl) return;
+      const gridTop = gridEl.getBoundingClientRect().top;
+      const height = Math.max(80, Math.round(gridTop - topBarBottom - 10));
+      document.documentElement.style.setProperty('--card-h', `${height}px`);
+    };
+
+    setLayoutMetrics();
+    window.addEventListener('resize', setLayoutMetrics);
+    requestAnimationFrame(setLayoutMetrics);
+
     const lenis = new Lenis({
       wrapper: scrollEl,
       content: trackEl,
+      eventsTarget: scrollEl,
       orientation: 'horizontal',
       gestureOrientation: 'vertical',
-      smoothWheel: true,
+      smoothWheel: false,
       syncTouch: true,
       touchMultiplier: 1.2,
     });
@@ -41,10 +79,9 @@ export default function HomePage({ projects, site }: HomePageProps) {
     frame = requestAnimationFrame(raf);
 
     const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        lenis.scrollTo(lenis.scroll + e.deltaY, { immediate: true });
-        e.preventDefault();
-      }
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      lenis.scrollTo(lenis.scroll + e.deltaY, { immediate: true });
     };
     scrollEl.addEventListener('wheel', handleWheel, { passive: false });
 
@@ -66,48 +103,129 @@ export default function HomePage({ projects, site }: HomePageProps) {
       });
 
       setActiveProjectId(anyVisible && nearest ? nearest : null);
+      setLayoutMetrics();
     };
 
     lenis.on('scroll', updateActive);
     updateActive();
 
+    const dismissCursor = () => {
+      hasScrolledRef.current = true;
+      cursorRef.current?.classList.add('hidden');
+      stageRef.current?.classList.remove('hide-cursor');
+      scrollEl.removeEventListener('scroll', dismissCursor);
+    };
+    scrollEl.addEventListener('scroll', dismissCursor);
+
     return () => {
       cancelAnimationFrame(frame);
       lenis.destroy();
       scrollEl.removeEventListener('wheel', handleWheel);
+      scrollEl.removeEventListener('scroll', dismissCursor);
+      window.removeEventListener('resize', setLayoutMetrics);
     };
-  }, [projects]);
+  }, [galleryCards]);
+
+  const handleStageMouseEnter = () => {
+    if (hasScrolledRef.current) return;
+    cursorRef.current?.classList.remove('hidden');
+    stageRef.current?.classList.add('hide-cursor');
+  };
+
+  const handleStageMouseLeave = () => {
+    cursorRef.current?.classList.add('hidden');
+    stageRef.current?.classList.remove('hide-cursor');
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cursorRef.current) return;
+    cursorRef.current.style.left = `${e.clientX}px`;
+    cursorRef.current.style.top = `${e.clientY}px`;
+  };
 
   return (
-    <div id="hd-stage">
-      <div id="hd-scroll" ref={scrollRef}>
-        <div id="hd-track" ref={trackRef}>
-          <div className="hd-spacer hd-spacer-lead" />
-          {projects.map((project, index) => (
-            <div key={project.id} className="hd-card" data-project-id={project.id}>
-              <Link to={projectUrl(project.slug)} className="hd-card-link">
-                <div className="image-wrap hd-card-image-wrap">
-                  <img
-                    src={project.coverImage}
-                    alt={project.title}
-                    loading={index < 2 ? 'eager' : 'lazy'}
-                  />
-                </div>
-              </Link>
-            </div>
-          ))}
-          <div className="hd-spacer hd-spacer-trail" />
-        </div>
+    <div className="home-route-wrap" onMouseMove={handleMouseMove}>
+      <div className="home-bg" aria-hidden>
+        <img src={backgroundImage} alt="" className="home-bg-image" />
       </div>
 
-      <NavGrid
-        projects={projects}
-        site={site}
-        variant="home"
-        activeProjectId={activeProjectId}
-        activeCapabilities={activeCapabilities}
-        activeProjectQuote={activeProject?.quote}
-      />
+      <div id="hd-cursor" ref={cursorRef} className="hidden">
+        Scroll
+      </div>
+
+      <header ref={topBarRef} className="home-top-bar">
+        <p className="home-intro-pill">
+          {site.homeIntroTitle?.split('\n').map((line, index) => (
+            <span key={line}>
+              {index > 0 ? <br /> : null}
+              {line}
+            </span>
+          ))}
+        </p>
+      </header>
+
+      <div
+        id="hd-stage"
+        ref={stageRef}
+        onMouseEnter={handleStageMouseEnter}
+        onMouseLeave={handleStageMouseLeave}
+      >
+        <div id="hd-scroll" ref={scrollRef}>
+          <div id="hd-track" ref={trackRef}>
+            <div className="hd-spacer hd-spacer-lead" />
+            {galleryCards.map((card, index) => {
+              if (card.kind === 'stack') {
+                return (
+                  <div
+                    key={`stack-${index}`}
+                    className="hd-card hd-card--stack"
+                    data-project-id={card.projectId}
+                  >
+                    <div className="hd-stack">
+                      {card.images.map((image, imageIndex) => (
+                        <Link
+                          key={`${image}-${imageIndex}`}
+                          to={projectUrl(card.slug)}
+                          className="hd-card-link hd-card-link--stack"
+                        >
+                          <div className="image-wrap">
+                            <img src={image} alt="" loading={index < 4 ? 'eager' : 'lazy'} />
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div
+                  key={`single-${index}`}
+                  className={`hd-card hd-card--${card.size}`}
+                  data-project-id={card.projectId}
+                >
+                  <Link to={projectUrl(card.slug)} className="hd-card-link">
+                    <div className="image-wrap">
+                      <img src={card.image} alt="" loading={index < 4 ? 'eager' : 'lazy'} />
+                    </div>
+                  </Link>
+                </div>
+              );
+            })}
+            <div className="hd-spacer hd-spacer-trail" />
+          </div>
+        </div>
+
+        <NavGrid
+          projects={navProjects}
+          site={site}
+          variant="home"
+          activeProjectId={activeProjectId}
+          activeCapabilities={activeCapabilities}
+          activeProjectQuote={activeProject?.quote}
+          capabilitiesList={[...CAPABILITIES_LIST]}
+        />
+      </div>
     </div>
   );
 }

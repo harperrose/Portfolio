@@ -1,4 +1,36 @@
-# React + TypeScript + Vite
+# Harper Daniel Portfolio
+
+React + Vite site with Webflow styling and [TinaCMS](https://tina.io) for content editing.
+
+## TinaCMS setup
+
+This project is already initialized (`tina/config.ts`). Running init again is a no-op:
+
+```bash
+npx @tinacms/cli@latest init
+```
+
+Copy `.env.example` to `.env` and add your Tina Cloud credentials from [app.tina.io](https://app.tina.io):
+
+- `TINA_PUBLIC_CLIENT_ID` — required
+- `TINA_TOKEN` — required for production builds and authenticated editing
+
+Start the Tina dev server and Vite together:
+
+```bash
+npm run dev
+# same as: npx tinacms dev -c "vite"
+```
+
+CMS admin: `http://localhost:5173/admin/index.html`
+
+For fully local editing without Tina Cloud (no token needed):
+
+```bash
+npm run dev:local
+```
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

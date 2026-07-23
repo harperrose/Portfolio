@@ -1,7 +1,7 @@
 ---
 title: 9413 Sophia Avenue
 slug: are-na-powered-site-for-art-grant
-coverImage: /images/display.png
+coverImage: /images/sophia-mobile.gif
 quote: The 9413 Sophia Ave Project is both an address and a performance, utilizing the Are.na API to map architecture, memory, connection and decay.
 summary: We utilized the Are.na API to map the intersection of architecture, memory, connection and decay.
 capabilities:

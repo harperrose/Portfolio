@@ -2,7 +2,8 @@ export type ContentBlock =
   | { _template: 'image'; src: string; alt?: string }
   | { _template: 'paragraph'; text: string }
   | { _template: 'doubleImage'; left: string; right: string }
-  | { _template: 'iframe'; src: string; height?: string };
+  | { _template: 'iframe'; src: string; height?: string }
+  | { _template: 'beforeAfter'; before: string; after: string; alt?: string };
 
 export type ProjectPanel = {
   label: string;
@@ -18,6 +19,8 @@ export type Project = {
   summary?: string;
   capabilities: string[];
   order?: number;
+  draft?: boolean;
+  hidden?: boolean;
   nextProjectSlug?: string;
   panels: ProjectPanel[];
 };
@@ -41,6 +44,8 @@ export type Service = {
 export type SiteSettings = {
   infoHeroTitle: string;
   infoHeroImage?: string;
+  homeIntroTitle?: string;
+  homeBackgroundImage?: string;
   contactHeading?: string;
   colophonText?: string;
   colophonLinkText?: string;

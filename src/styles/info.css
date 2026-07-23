@@ -1,0 +1,67 @@
+.info-page {
+  padding-top: 52px;
+}
+
+.info-wrap {
+  overflow: visible;
+}
+
+.service-item .heading .link-unstyled.underlined {
+  color: inherit;
+}
+
+.service-item .section_feature.info .service-carousel-link {
+  color: var(--_color---black, #000);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.service-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.service-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.service-scroll-track {
+  display: flex;
+  gap: 8px;
+  width: max-content;
+  padding-bottom: 4px;
+}
+
+.service-scroll-item {
+  flex: 0 0 auto;
+  width: min(42vw, 320px);
+}
+
+.service-scroll-item .section_feature.info {
+  display: block;
+}
+
+.service-scroll-image,
+.service-scroll-item .image-3.info {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 40px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+#hd-contact-wrapper iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
+
+@media (max-width: 500px) {
+  .service-scroll-item {
+    width: 72vw;
+  }
+}

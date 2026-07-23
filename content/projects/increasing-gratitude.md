@@ -1,8 +1,8 @@
 ---
 title: Increasing Gratitude
 slug: increasing-gratitude
-coverImage: /images/yoga-solace.webp
-quote: Solace offers a user-friendly platform where individuals can reflect, track, and enhance their well-being in a simple, enjoyable way.
+coverImage: /images/solace-home.jpg
+quote: Small daily rituals designed to compound.
 summary: Solace is designed to create more fulfilling lives by fostering gratitude and reducing stress through an intuitive, self-guided journaling experience.
 capabilities:
   - Product Design

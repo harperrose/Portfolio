@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { Project, Service, SiteSettings } from '../types/content';
 import { projectUrl } from '../lib/content';
-import NavGrid from '../components/NavGrid';
+import SiteNav from '../components/SiteNav';
 import ServiceCarousel from '../components/ServiceCarousel';
 import ContactForm from '../components/ContactForm';
 
@@ -14,55 +14,43 @@ type InfoPageProps = {
 
 export default function InfoPage({ projects, services, site }: InfoPageProps) {
   useEffect(() => {
-    const capList = document.getElementById('hd-capabilities-list');
-    if (!capList) return;
-
-    const capItems = capList.querySelectorAll('li');
-    const uniqueTargets = [...new Set(site.capabilities.map((cap) => cap.anchorId))];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          capItems.forEach((li) => li.classList.remove('hd-active'));
-          document
-            .querySelectorAll(`#hd-capabilities-list li[data-target-id="${entry.target.id}"]`)
-            .forEach((li) => li.classList.add('hd-active'));
-        });
-      },
-      { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 },
-    );
-
-    uniqueTargets.forEach((targetId) => {
-      const section = document.getElementById(targetId);
-      if (section) observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, [site.capabilities]);
+    document.body.classList.add('body-6', 'info-route');
+    return () => {
+      document.body.classList.remove('body-6', 'info-route');
+    };
+  }, []);
 
   const nextProject = projects[0];
 
   return (
-    <div className="body-6">
+    <div className="info-page">
+      <SiteNav />
+
       <div className="title-nav-wrap _65vh">
         <div className="title-wrap grid">
           <p className="title">{site.infoHeroTitle}</p>
           {site.infoHeroImage ? (
-            <img src={site.infoHeroImage} loading="lazy" height={500} alt="" className="image-5" />
+            <img
+              src={site.infoHeroImage}
+              srcSet="/images/baby-p-500.webp 500w, /images/baby-p-800.webp 800w, /images/baby.webp 828w"
+              sizes="(max-width: 500px) 100vw, 294px"
+              loading="lazy"
+              alt=""
+              className="image-5"
+            />
           ) : null}
         </div>
       </div>
 
       <div className="info-wrap">
-        <div className="code-embed w-embed w-script">
-          <NavGrid projects={projects} site={site} variant="info" />
-        </div>
-
         <div className="dropdown-content into">
           {services.map((service) => (
             <section key={service.id} id={service.slug} className="service-item">
-              <h4 className="heading">{service.title}</h4>
+              <h4 className="heading">
+                <a href={`#${service.slug}`} className="link-unstyled underlined">
+                  {service.title}
+                </a>
+              </h4>
               <div className="link-unstyled _2-grid-cols">{service.description}</div>
               <ServiceCarousel items={service.items} />
             </section>
@@ -116,7 +104,7 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
               {site.copyrightText}
             </a>
           </div>
-          <ContactForm arenaUrl={site.arenaUrl} successMessage={site.contactSuccessMessage} />
+          <ContactForm arenaUrl={site.arenaUrl} />
         </div>
       </section>
     </div>

@@ -9,8 +9,11 @@ const capabilityOptions = [
 ];
 
 export default defineConfig({
-  branch: "main",
-  clientId: process.env.VITE_TINA_CLIENT_ID || null,
+  branch: process.env.TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || "main",
+  clientId:
+    process.env.TINA_PUBLIC_CLIENT_ID ||
+    process.env.VITE_TINA_CLIENT_ID ||
+    null,
   token: process.env.TINA_TOKEN || null,
   build: {
     outputFolder: "admin",
@@ -46,6 +49,17 @@ export default defineConfig({
             type: "image",
             name: "infoHeroImage",
             label: "Info Page Hero Image",
+          },
+          {
+            type: "string",
+            name: "homeIntroTitle",
+            label: "Home Page Intro Title",
+            ui: { component: "textarea" },
+          },
+          {
+            type: "image",
+            name: "homeBackgroundImage",
+            label: "Home Page Background Image",
           },
           {
             type: "string",
@@ -217,6 +231,18 @@ export default defineConfig({
             label: "Home Page Order",
           },
           {
+            type: "boolean",
+            name: "draft",
+            label: "Draft",
+            description: "Draft case studies are hidden from the site and return a 404.",
+          },
+          {
+            type: "boolean",
+            name: "hidden",
+            label: "Hidden",
+            description: "Hidden case studies are removed from navigation and the home scroll, but remain accessible by URL.",
+          },
+          {
             type: "reference",
             name: "nextProject",
             label: "Next Project",
@@ -305,6 +331,25 @@ export default defineConfig({
                         label: "Height",
                         description: "CSS height value, e.g. 60vh",
                       },
+                    ],
+                  },
+                  {
+                    name: "beforeAfter",
+                    label: "Before / After Slider",
+                    fields: [
+                      {
+                        type: "image",
+                        name: "before",
+                        label: "Before Image",
+                        required: true,
+                      },
+                      {
+                        type: "image",
+                        name: "after",
+                        label: "After Image",
+                        required: true,
+                      },
+                      { type: "string", name: "alt", label: "Alt Text" },
                     ],
                   },
                 ],

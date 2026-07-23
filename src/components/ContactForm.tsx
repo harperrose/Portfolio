@@ -1,19 +1,63 @@
+import { useEffect } from 'react';
+
+const TALLY_EMBED =
+  'https://tally.so/embed/w7k8b2?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1';
+
 type ContactFormProps = {
   compact?: boolean;
   arenaUrl?: string;
-  successMessage?: string;
 };
 
-export default function ContactForm({
-  compact = false,
-  arenaUrl,
-  successMessage = 'Thanks! Ill be in touch soon.',
-}: ContactFormProps) {
+declare global {
+  interface Window {
+    Tally?: {
+      loadEmbeds: () => void;
+    };
+  }
+}
+
+function loadTallyEmbeds() {
+  if (typeof window.Tally !== 'undefined') {
+    window.Tally.loadEmbeds();
+    return;
+  }
+
+  const existing = document.querySelector('script[data-tally-embed]');
+  if (existing) return;
+
+  const script = document.createElement('script');
+  script.src = 'https://tally.so/widgets/embed.js';
+  script.async = true;
+  script.dataset.tallyEmbed = 'true';
+  script.onload = () => window.Tally?.loadEmbeds();
+  document.body.appendChild(script);
+}
+
+export default function ContactForm({ compact = false, arenaUrl }: ContactFormProps) {
+  useEffect(() => {
+    loadTallyEmbeds();
+  }, []);
+
+  if (compact) {
+    return (
+      <div id="hd-contact-wrapper" className="navigation-item centered is-form">
+        <div className="navigation-text">Contact</div>
+        <iframe
+          data-tally-src={TALLY_EMBED}
+          loading="lazy"
+          width="100%"
+          height="280"
+          frameBorder={0}
+          marginHeight={0}
+          marginWidth={0}
+          title="Contact Harper Daniel"
+        />
+      </div>
+    );
+  }
+
   return (
-    <div
-      id="hd-contact-wrapper"
-      className={`navigation-item centered footer is-form${compact ? ' is-compact' : ''}`}
-    >
+    <div id="hd-contact-wrapper" className="navigation-item centered footer is-form">
       <div className="div-block-12">
         <a href="#contact" className="navigation-text centered">
           Contact
@@ -25,30 +69,16 @@ export default function ContactForm({
         ) : null}
       </div>
       <div id="1800-contact-me" className="form">
-        <div id="1800-Contact-me" className="w-form">
-          <form id="email-form" name="email-form" onSubmit={(e) => e.preventDefault()}>
-            <input className="text-field w-input" name="name" placeholder="Name" type="text" />
-            <input
-              className="text-field w-input"
-              name="email"
-              placeholder="Email"
-              type="email"
-              required
-            />
-            <textarea
-              name="Message"
-              placeholder="Your Message"
-              className="text-field w-input"
-            />
-            <input type="submit" value="Submit" className="submit-button w-button" />
-          </form>
-          <div className="success-message-2 w-form-done">
-            <div>{successMessage}</div>
-          </div>
-          <div className="w-form-fail">
-            <div>Oops! Something went wrong while submitting the form.</div>
-          </div>
-        </div>
+        <iframe
+          data-tally-src={TALLY_EMBED}
+          loading="lazy"
+          width="100%"
+          height="400"
+          frameBorder={0}
+          marginHeight={0}
+          marginWidth={0}
+          title="Contact Harper Daniel"
+        />
       </div>
     </div>
   );

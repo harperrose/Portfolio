@@ -1,0 +1,221 @@
+body.case-study-route {
+  background-color: #b9c6d5;
+}
+
+.case-study-page {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 52px;
+}
+
+.cs-main {
+  position: relative;
+  z-index: 1;
+}
+
+.cs-section {
+  padding: 5px;
+}
+
+.cs-section-wrap {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 5px;
+}
+
+.cs-section-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  padding: 84px 26px 26px;
+  border-radius: 5px;
+  background: #b9c6d5;
+}
+
+.cs-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 746px;
+}
+
+.cs-section-title {
+  margin: 0;
+  color: #000;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+.cs-section-intro,
+.cs-section-text {
+  margin: 0;
+  color: #000;
+  font-family: 'Switzer', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.cs-media-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.cs-media-item {
+  width: 100%;
+}
+
+.cs-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 40px;
+  overflow: clip;
+  object-fit: cover;
+}
+
+.cs-media-item--image .cs-img,
+.cs-media-item--iframe .w-embed,
+.cs-media-item--beforeAfter .before-after {
+  border-radius: 40px;
+  overflow: hidden;
+}
+
+.cs-media-item--doubleImage .double {
+  display: flex;
+  gap: 8px;
+}
+
+.cs-media-item--doubleImage .cs-img.double {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+}
+
+.cs-media-item--iframe iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 40px;
+}
+
+.case-study-page .next-project {
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+  z-index: 1001;
+  width: min(33vw, 525px);
+}
+
+.case-study-page .next-project-link {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.case-study-page .next-project-image {
+  width: 72px;
+  height: 60px;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.case-study-page .next-project-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.case-study-page .next-project-copy .heading-9,
+.case-study-page .next-project-copy .text-block-15 {
+  margin: 0;
+  text-align: left;
+}
+
+.before-after {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  touch-action: none;
+  border-radius: 40px;
+}
+
+.before-after__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.before-after__before {
+  position: relative;
+  z-index: 0;
+}
+
+.before-after__after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.before-after__after .before-after__image {
+  width: 100%;
+  height: auto;
+}
+
+.before-after__handle {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  transform: translate(-50%, -50%);
+  cursor: ew-resize;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.before-after__handle::before {
+  content: '';
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+@media (max-width: 500px) {
+  .cs-section-inner {
+    padding-top: 48px;
+    gap: 24px;
+  }
+
+  .cs-section-title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .cs-media-item--doubleImage .double {
+    flex-direction: column;
+  }
+
+  .case-study-page .next-project {
+    width: calc(100vw - 10px);
+    max-width: none;
+  }
+}
