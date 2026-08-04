@@ -14,12 +14,12 @@ body.case-study-route {
 }
 
 .cs-section {
-  padding: 5px;
+  padding: 0;
 }
 
 .cs-section-wrap {
   background: rgba(0, 0, 0, 0.6);
-  padding: 5px;
+  padding: 0;
 }
 
 .cs-section-inner {
@@ -27,15 +27,18 @@ body.case-study-route {
   flex-direction: column;
   gap: 42px;
   padding: 84px 26px 26px;
-  border-radius: 5px;
+  border-radius: 0;
   background: #b9c6d5;
+  text-align: left;
 }
 
 .cs-section-header {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 746px;
+  max-width: none;
+  width: 100%;
+  text-align: left;
 }
 
 .cs-section-title {
@@ -45,6 +48,7 @@ body.case-study-route {
   font-size: 36px;
   font-weight: 400;
   line-height: 40px;
+  text-align: left;
 }
 
 .cs-section-intro,
@@ -53,7 +57,8 @@ body.case-study-route {
   color: #000;
   font-family: 'Switzer', Arial, sans-serif;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 1.5;
+  text-align: left;
 }
 
 .cs-media-grid {
@@ -102,42 +107,20 @@ body.case-study-route {
   border-radius: 40px;
 }
 
-.case-study-page .next-project {
-  position: fixed;
-  right: 5px;
-  bottom: 5px;
-  z-index: 1001;
-  width: min(33vw, 525px);
+.case-study-footer {
+  position: static;
+  padding: 0;
 }
 
-.case-study-page .next-project-link {
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  align-items: center;
-  gap: 8px;
-  text-align: left;
+.case-study-footer .info-contact-static {
+  padding: 5px;
 }
 
-.case-study-page .next-project-image {
-  width: 72px;
-  height: 60px;
-  max-height: none;
-  object-fit: cover;
-  border-radius: 3px;
-}
-
-.case-study-page .next-project-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-  min-width: 0;
-}
-
-.case-study-page .next-project-copy .heading-9,
-.case-study-page .next-project-copy .text-block-15 {
-  margin: 0;
-  text-align: left;
+.case-study-footer .info-footer-links .site-footer-link {
+  display: block;
+  padding: 5px 0;
+  color: inherit;
+  text-decoration: none;
 }
 
 .before-after {
@@ -199,7 +182,7 @@ body.case-study-route {
   pointer-events: none;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .cs-section-inner {
     padding-top: 48px;
     gap: 24px;
@@ -212,10 +195,5 @@ body.case-study-route {
 
   .cs-media-item--doubleImage .double {
     flex-direction: column;
-  }
-
-  .case-study-page .next-project {
-    width: calc(100vw - 10px);
-    max-width: none;
   }
 }

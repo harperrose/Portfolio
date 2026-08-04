@@ -1,7 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import type { Project, SiteSettings } from '../types/content';
 import { projectUrl } from '../lib/content';
-import ContactForm from './ContactForm';
 
 type NavGridProps = {
   projects: Project[];
@@ -22,22 +21,21 @@ export default function NavGrid({
   activeProjectQuote,
   capabilitiesList,
 }: NavGridProps) {
-  const location = useLocation();
-  const isHome = location.pathname === '/';
-  const isInfo = location.pathname === '/info';
-  const showQuote = variant === 'home' && activeProjectId;
   const homeCapabilities = capabilitiesList ?? site.capabilities.map((cap) => cap.label);
+  const quote = activeProjectQuote?.trim();
 
   return (
     <div id="hd-grid" className={variant === 'home' ? 'hd-nav-home' : 'hd-nav-info'}>
-      <div className="hd-col" id="hd-col-nav">
-        <Link to="/" className="nav-link" style={isHome ? { color: 'white' } : undefined}>
-          Work
-        </Link>
-        <Link to="/info" className="nav-link" style={isInfo ? { color: 'white' } : undefined}>
-          Info
-        </Link>
-      </div>
+      {variant === 'info' ? (
+        <div className="hd-col" id="hd-col-nav">
+          <Link to="/" className="nav-link">
+            Work
+          </Link>
+          <Link to="/info" className="nav-link" style={{ color: 'white' }}>
+            Info
+          </Link>
+        </div>
+      ) : null}
 
       <div className="hd-col" id="hd-col-projects">
         <ul id="hd-projects-list" className="hd-projects-inline">
@@ -77,18 +75,13 @@ export default function NavGrid({
         </ul>
       </div>
 
-      <div className="hd-col" id="hd-col-right">
+      <div className="hd-col hd-col-right" id="hd-col-right">
         {variant === 'home' ? (
-          <>
-            <div id="hd-quote" className={showQuote ? 'state-on' : 'state-off'}>
-              {activeProjectQuote}
-            </div>
-            <div id="hd-contact" className={showQuote ? 'state-off' : 'state-on'}>
-              <ContactForm compact arenaUrl={site.arenaUrl} />
-            </div>
-          </>
+          <div id="hd-quote" className={quote ? 'state-on' : 'state-off'}>
+            {quote}
+          </div>
         ) : (
-          <a href="#contact" className="nav-link" style={{ color: 'white' }}>
+          <a href={`mailto:${site.contactEmail ?? 'info@harperdaniel.com'}`} className="nav-link" style={{ color: 'white' }}>
             Contact
           </a>
         )}

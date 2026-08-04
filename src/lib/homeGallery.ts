@@ -1,81 +1,52 @@
-import type { ContentBlock, Project } from '../types/content';
+import type { ContentBlock, HomeGalleryItem, Project } from '../types/content';
 
 export type HomeCard =
   | { kind: 'single'; slug: string; projectId: string; image: string; size: 'narrow' | 'wide' }
   | { kind: 'stack'; slug: string; projectId: string; images: [string, string] };
 
-const LAYOUT_PATTERN = [
-  'narrow',
-  'stack',
-  'narrow',
-  'wide',
-  'stack',
-  'narrow',
-  'narrow',
-  'narrow',
-] as const;
-
-function collectProjectImages(project: Project): string[] {
-  const images: string[] = [];
-
-  if (project.coverImage) images.push(project.coverImage);
-
-  for (const panel of project.panels) {
-    for (const block of panel.blocks) {
-      if (block._template === 'image') images.push(block.src);
-      if (block._template === 'doubleImage') {
-        images.push(block.left, block.right);
-      }
-    }
+function itemToCard(
+  item: HomeGalleryItem,
+  slug: string,
+  projectId: string,
+): HomeCard | null {
+  if (item.layout === 'stack') {
+    return {
+      kind: 'stack',
+      slug,
+      projectId,
+      images: [item.imageTop, item.imageBottom],
+    };
   }
 
-  return [...new Set(images.filter(Boolean))];
+  return {
+    kind: 'single',
+    slug,
+    projectId,
+    image: item.image,
+    size: item.layout === 'wide' ? 'wide' : 'narrow',
+  };
+}
+
+function fallbackCards(projects: Project[]): HomeCard[] {
+  return projects
+    .filter((project) => project.coverImage)
+    .map((project) => ({
+      kind: 'single' as const,
+      slug: project.slug,
+      projectId: project.id,
+      image: project.coverImage,
+      size: 'narrow' as const,
+    }));
 }
 
 export function buildHomeGallery(projects: Project[]): HomeCard[] {
-  const pool = projects.flatMap((project) =>
-    collectProjectImages(project).map((image) => ({
-      slug: project.slug,
-      projectId: project.id,
-      image,
-    })),
+  const cards = projects.flatMap((project) =>
+    (project.homeGallery ?? [])
+      .map((item) => itemToCard(item, project.slug, project.id))
+      .filter((card): card is HomeCard => card !== null),
   );
 
-  const cards: HomeCard[] = [];
-  let poolIndex = 0;
-  let patternIndex = 0;
-
-  while (poolIndex < pool.length) {
-    const pattern = LAYOUT_PATTERN[patternIndex % LAYOUT_PATTERN.length];
-    patternIndex += 1;
-
-    if (pattern === 'stack') {
-      const top = pool[poolIndex++];
-      if (!top) break;
-      const bottom = pool[poolIndex] ?? top;
-      if (pool[poolIndex]) poolIndex += 1;
-      cards.push({
-        kind: 'stack',
-        slug: top.slug,
-        projectId: top.projectId,
-        images: [top.image, bottom.image],
-      });
-      continue;
-    }
-
-    const item = pool[poolIndex++];
-    if (!item) break;
-
-    cards.push({
-      kind: 'single',
-      slug: item.slug,
-      projectId: item.projectId,
-      image: item.image,
-      size: pattern === 'wide' ? 'wide' : 'narrow',
-    });
-  }
-
-  return cards;
+  return cards.length ? cards : fallbackCards(projects);
 }
 
 export function getPanelParagraphs(blocks: ContentBlock[]): string[] {

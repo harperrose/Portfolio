@@ -46,6 +46,20 @@
   flex: 0 0 auto;
 }
 
+.site-nav--case-study .site-nav-link {
+  color: #535353;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.site-nav--case-study .cs-progress-segment {
+  color: #535353;
+}
+
+.site-nav--case-study .cs-progress-segment.is-active,
+.site-nav--case-study .cs-progress-segment.is-complete {
+  color: #000;
+}
+
 .cs-progress-track {
   flex: 1 1 auto;
   min-width: 0;
@@ -97,7 +111,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .site-nav {
     flex-wrap: wrap;
   }

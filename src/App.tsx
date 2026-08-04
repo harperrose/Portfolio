@@ -3,6 +3,7 @@ import { getListedProjects, getProjectBySlug, getSiteContent } from './lib/conte
 import HomePage from './pages/HomePage';
 import InfoPage from './pages/InfoPage';
 import CaseStudyPage from './pages/CaseStudyPage';
+import ScrollToTop from './components/ScrollToTop';
 
 const content = getSiteContent();
 const listedProjects = getListedProjects();
@@ -15,12 +16,13 @@ function CaseStudyRoute() {
     return <Navigate to="/" replace />;
   }
 
-  return <CaseStudyPage project={project} site={content.site} />;
+  return <CaseStudyPage project={project} projects={listedProjects} site={content.site} />;
 }
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage projects={listedProjects} site={content.site} />} />
         <Route

@@ -8,6 +8,9 @@ type SiteNavProps = {
   activeIndex?: number;
   segmentProgress?: number[];
   onSectionClick?: (index: number) => void;
+  contactHref?: string;
+  showContact?: boolean;
+  variant?: 'default' | 'case-study';
 };
 
 export default function SiteNav({
@@ -16,6 +19,9 @@ export default function SiteNav({
   activeIndex = 0,
   segmentProgress = [],
   onSectionClick,
+  contactHref = '#contact',
+  showContact = true,
+  variant = 'default',
 }: SiteNavProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
@@ -54,7 +60,7 @@ export default function SiteNav({
   }, [panels, projectTitle, showProgress]);
 
   return (
-    <header className="site-nav">
+    <header className={`site-nav${variant === 'case-study' ? ' site-nav--case-study' : ''}`}>
       <div className="site-nav-primary">
         <Link to="/" className="site-nav-link">
           Home
@@ -62,9 +68,11 @@ export default function SiteNav({
         <Link to="/info" className="site-nav-link">
           Info
         </Link>
-        <a href="#contact" className="site-nav-link">
-          Contact
-        </a>
+        {showContact ? (
+          <a href={contactHref} className="site-nav-link">
+            Contact
+          </a>
+        ) : null}
       </div>
 
       {showProgress ? (

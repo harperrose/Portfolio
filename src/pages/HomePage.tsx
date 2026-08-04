@@ -30,7 +30,7 @@ export default function HomePage({ projects, site }: HomePageProps) {
 
   const activeProject = navProjects.find((p) => p.id === activeProjectId);
   const activeCapabilities = activeProject?.capabilities ?? [];
-  const backgroundImage = site.homeBackgroundImage ?? '/images/solace-home.jpg';
+  const backgroundImage = site.homeBackgroundImage ?? '/images/background.png';
 
   useEffect(() => {
     document.body.classList.add('home-route', 'body-5');
@@ -154,14 +154,13 @@ export default function HomePage({ projects, site }: HomePageProps) {
       </div>
 
       <header ref={topBarRef} className="home-top-bar">
-        <p className="home-intro-pill">
-          {site.homeIntroTitle?.split('\n').map((line, index) => (
-            <span key={line}>
-              {index > 0 ? <br /> : null}
-              {line}
-            </span>
-          ))}
-        </p>
+        <p className="home-top-pill home-intro-pill">{site.homeIntroTitle}</p>
+        <Link to="/info" className="home-top-pill home-top-link">
+          Info
+        </Link>
+        <a href="mailto:info@harperdaniel.com" className="home-top-pill home-top-link">
+          Contact
+        </a>
       </header>
 
       <div

@@ -5,6 +5,12 @@ export type ContentBlock =
   | { _template: 'iframe'; src: string; height?: string }
   | { _template: 'beforeAfter'; before: string; after: string; alt?: string };
 
+export type HomeGalleryLayout = 'single' | 'wide' | 'stack';
+
+export type HomeGalleryItem =
+  | { layout: 'single' | 'wide'; image: string }
+  | { layout: 'stack'; imageTop: string; imageBottom: string };
+
 export type ProjectPanel = {
   label: string;
   blocks: ContentBlock[];
@@ -22,6 +28,7 @@ export type Project = {
   draft?: boolean;
   hidden?: boolean;
   nextProjectSlug?: string;
+  homeGallery?: HomeGalleryItem[];
   panels: ProjectPanel[];
 };
 
@@ -47,6 +54,9 @@ export type SiteSettings = {
   homeIntroTitle?: string;
   homeBackgroundImage?: string;
   contactHeading?: string;
+  contactEmail?: string;
+  instagramUrl?: string;
+  linkedinUrl?: string;
   colophonText?: string;
   colophonLinkText?: string;
   colophonLinkUrl?: string;

@@ -68,6 +68,21 @@ export default defineConfig({
           },
           {
             type: "string",
+            name: "contactEmail",
+            label: "Contact Email",
+          },
+          {
+            type: "string",
+            name: "instagramUrl",
+            label: "Instagram URL",
+          },
+          {
+            type: "string",
+            name: "linkedinUrl",
+            label: "LinkedIn URL",
+          },
+          {
+            type: "string",
             name: "colophonText",
             label: "Colophon Text",
             ui: { component: "textarea" },
@@ -232,15 +247,63 @@ export default defineConfig({
           },
           {
             type: "boolean",
+            name: "hidden",
+            label: "Hide from site",
+            description:
+              "Removes this project from the home gallery, navigation, and project lists. The URL still works if shared directly.",
+          },
+          {
+            type: "boolean",
             name: "draft",
             label: "Draft",
             description: "Draft case studies are hidden from the site and return a 404.",
           },
           {
-            type: "boolean",
-            name: "hidden",
-            label: "Hidden",
-            description: "Hidden case studies are removed from navigation and the home scroll, but remain accessible by URL.",
+            type: "object",
+            name: "homeGallery",
+            label: "Home Page Gallery",
+            description:
+              "Choose which images appear on the home page and how they are laid out.",
+            list: true,
+            ui: {
+              itemProps: (item) => ({
+                label:
+                  item?.layout === "stack"
+                    ? "Two stack"
+                    : item?.layout === "wide"
+                      ? "Double width"
+                      : "Single width",
+              }),
+            },
+            fields: [
+              {
+                type: "string",
+                name: "layout",
+                label: "Layout",
+                required: true,
+                options: [
+                  { label: "Single width", value: "single" },
+                  { label: "Double width", value: "wide" },
+                  { label: "Two stack", value: "stack" },
+                ],
+              },
+              {
+                type: "image",
+                name: "image",
+                label: "Image",
+                description: "Used for single width and double width layouts.",
+              },
+              {
+                type: "image",
+                name: "imageTop",
+                label: "Top image (stack only)",
+              },
+              {
+                type: "image",
+                name: "imageBottom",
+                label: "Bottom image (stack only)",
+              },
+            ],
           },
           {
             type: "reference",

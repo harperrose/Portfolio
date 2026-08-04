@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import type { Project, Service, SiteSettings } from '../types/content';
 import { projectUrl } from '../lib/content';
 import SiteNav from '../components/SiteNav';
+import SiteFooterLinks from '../components/SiteFooterLinks';
 import ServiceCarousel from '../components/ServiceCarousel';
-import ContactForm from '../components/ContactForm';
 
 type InfoPageProps = {
   projects: Project[];
@@ -24,7 +24,7 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
 
   return (
     <div className="info-page">
-      <SiteNav />
+      <SiteNav contactHref={`mailto:${site.contactEmail ?? 'info@harperdaniel.com'}`} />
 
       <div className="title-nav-wrap _65vh">
         <div className="title-wrap grid">
@@ -33,7 +33,7 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
             <img
               src={site.infoHeroImage}
               srcSet="/images/baby-p-500.webp 500w, /images/baby-p-800.webp 800w, /images/baby.webp 828w"
-              sizes="(max-width: 500px) 100vw, 294px"
+              sizes="(max-width: 700px) 100vw, min(42vw, 500px)"
               loading="lazy"
               alt=""
               className="image-5"
@@ -58,11 +58,12 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
         </div>
       </div>
 
-      <section id="contact" className="contact-contact">
-        <div className="contact-heading">
+      <section id="contact" className="contact-contact info-contact-section">
+        <div className="contact-heading info-contact-heading">
           <h1 className="centered-heading">{site.contactHeading}</h1>
         </div>
-        <div className="div-block-7">
+
+        <div className="info-contact-static div-block-7">
           <div className="navigation-item footer">
             <a href="#" className="navigation-text centered">
               Colophon
@@ -81,7 +82,9 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
               ) : null}
             </div>
           </div>
+
           <div className="navigation-item footer">
+            <SiteFooterLinks site={site} className="info-footer-links" />
             {nextProject ? (
               <Link to={projectUrl(nextProject.slug)} className="w-inline-block">
                 <p className="navigation-text centered">Next Project</p>
@@ -96,15 +99,13 @@ export default function InfoPage({ projects, services, site }: InfoPageProps) {
               </Link>
             ))}
           </div>
+
           <div className="navigation-item footer">
             <Link to="/" className="navigation-text">
               Work
             </Link>
-            <a href="#" className="navigation-text">
-              {site.copyrightText}
-            </a>
+            <span className="navigation-text">{site.copyrightText}</span>
           </div>
-          <ContactForm arenaUrl={site.arenaUrl} />
         </div>
       </section>
     </div>

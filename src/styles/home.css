@@ -7,7 +7,7 @@
   --pad: 5px;
   --gap: 5px;
   --card-gap: 8px;
-  --mobile-max: 500px;
+  --mobile-max: 700px;
   --home-top-offset: 52px;
   --font: 'Switzer', 'DM Sans', -apple-system, sans-serif;
   --font-size: 16px;
@@ -37,7 +37,7 @@
   cursor: none !important;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   #hd-cursor {
     display: none;
   }
@@ -164,6 +164,10 @@
   pointer-events: all;
 }
 
+#hd-stage #hd-grid.hd-nav-home {
+  grid-template-columns: 2fr 1fr 2fr;
+}
+
 #hd-stage .hd-col {
   background: var(--bg-col);
   border-radius: var(--radius);
@@ -214,73 +218,84 @@
   opacity: 1;
 }
 
-#hd-contact .w-form {
-  width: 100%;
+.site-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-#hd-contact input,
-#hd-contact textarea {
-  display: block;
-  width: 100%;
-  padding: var(--pad);
-  margin-bottom: var(--pad);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius);
-  color: var(--ink);
-  outline: none;
+.site-footer-link {
+  color: inherit;
+  text-decoration: none;
 }
 
-#hd-contact input:focus,
-#hd-contact textarea:focus {
-  border-color: var(--ink-active);
-}
-
-#hd-contact .w-button,
-#hd-contact input[type='submit'] {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--ink-active);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius);
-  padding: var(--pad) calc(var(--pad) * 3);
-  cursor: pointer;
+.site-footer-link:hover {
+  color: var(--ink-active, #fff);
 }
 
 #hd-col-right {
-  grid-column: 4;
+  grid-column: -1;
   position: relative;
+  min-height: 0;
 }
 
-#hd-quote,
-#hd-contact {
+#hd-col-right.hd-col-right {
+  justify-content: flex-start;
+}
+
+#hd-quote {
   transition: opacity 0.1s ease, transform 0.6s ease;
   width: 100%;
+  padding: var(--pad);
+  font-family: 'Riccione Serial', serif;
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: left;
+  color: var(--ink-active);
+  font-weight: 300;
+  box-sizing: border-box;
 }
 
-#hd-quote.state-off,
-#hd-contact.state-off {
+#hd-quote.state-off {
   opacity: 0;
   pointer-events: none;
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: var(--pad);
   transform: translateY(10px);
 }
 
-#hd-quote.state-on,
-#hd-contact.state-on {
+#hd-quote.state-on {
   opacity: 1;
   pointer-events: all;
   position: relative;
   transform: translateY(0);
 }
 
-#hd-quote {
-  font-family: 'Riccione Serial', serif;
-  font-size: 20px;
-  text-align: center;
+.hd-footer-links {
+  margin-top: 0;
+}
+
+.hd-footer-links .site-footer-link {
+  display: block;
+  padding: var(--pad);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.hd-footer-links .site-footer-link:hover {
   color: var(--ink-active);
-  font-weight: 300;
+}
+
+#hd-stage #hd-grid.hd-nav-home #hd-col-projects {
+  grid-column: 1;
+}
+
+#hd-stage #hd-grid.hd-nav-home #hd-col-capabilities {
+  grid-column: 2;
+}
+
+#hd-stage #hd-grid.hd-nav-home #hd-col-right {
+  grid-column: 3;
 }
 
 body.home-route,
@@ -312,8 +327,7 @@ body.home-route.body-5 {
   height: 100%;
   object-fit: cover;
   opacity: 1;
-  filter: blur(10px);
-  transform: scale(1.06);
+  transform: none;
 }
 
 .home-top-bar {
@@ -322,12 +336,16 @@ body.home-route.body-5 {
   left: 5px;
   right: 5px;
   z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: stretch;
   pointer-events: none;
 }
 
-.home-intro-pill {
-  display: inline-block;
-  max-width: min(100%, 720px);
+.home-top-pill {
+  display: inline-flex;
+  align-items: center;
   margin: 0;
   padding: 8px;
   border-radius: 2px;
@@ -342,7 +360,17 @@ body.home-route.body-5 {
   line-height: 20px;
 }
 
-@media (max-width: 500px) {
+.home-top-link {
+  text-decoration: none;
+  pointer-events: all;
+}
+
+.home-intro-pill {
+  max-width: min(100%, 720px);
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
   .hd-card,
   .hd-card--narrow,
   .hd-card--wide,
@@ -353,6 +381,12 @@ body.home-route.body-5 {
   #hd-stage #hd-grid.hd-nav-home {
     grid-template-columns: 1fr;
     align-items: start;
+  }
+
+  #hd-stage #hd-grid.hd-nav-home #hd-col-projects,
+  #hd-stage #hd-grid.hd-nav-home #hd-col-capabilities,
+  #hd-stage #hd-grid.hd-nav-home #hd-col-right {
+    grid-column: auto;
   }
 
   #hd-stage #hd-grid.hd-nav-home .hd-col {

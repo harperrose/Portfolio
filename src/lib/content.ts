@@ -2,6 +2,7 @@ import { parse as parseYaml } from 'yaml';
 import siteJson from '../../content/site/settings.json';
 import type {
   ContentBlock,
+  HomeGalleryItem,
   Project,
   ProjectPanel,
   Service,
@@ -55,6 +56,32 @@ function normalizePanels(panels: unknown): ProjectPanel[] {
   }));
 }
 
+function normalizeHomeGallery(items: unknown): HomeGalleryItem[] {
+  if (!Array.isArray(items)) return [];
+
+  return items
+    .map((item) => {
+      const raw = item as Record<string, unknown>;
+      const layout = String(raw.layout ?? 'single');
+
+      if (layout === 'stack') {
+        const imageTop = String(raw.imageTop ?? '');
+        const imageBottom = String(raw.imageBottom ?? '');
+        if (!imageTop || !imageBottom) return null;
+        return { layout: 'stack' as const, imageTop, imageBottom };
+      }
+
+      const image = String(raw.image ?? '');
+      if (!image) return null;
+
+      return {
+        layout: layout === 'wide' ? ('wide' as const) : ('single' as const),
+        image,
+      };
+    })
+    .filter((item): item is HomeGalleryItem => item !== null);
+}
+
 function normalizeProject(raw: Record<string, unknown>, path: string): Project {
   return {
     id: idFromPath(path),
@@ -70,6 +97,7 @@ function normalizeProject(raw: Record<string, unknown>, path: string): Project {
     draft: raw.draft === true,
     hidden: raw.hidden === true,
     nextProjectSlug: refToSlug(raw.nextProject as string | undefined),
+    homeGallery: normalizeHomeGallery(raw.homeGallery),
     panels: normalizePanels(raw.panels),
   };
 }
