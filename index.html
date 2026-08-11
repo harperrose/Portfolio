@@ -9,6 +9,24 @@
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
   <link href="/favicon.svg" rel="shortcut icon" type="image/svg+xml">
   <link href="/images/webclip.gif" rel="apple-touch-icon">
+  <script type="text/javascript">
+    (function (location) {
+      if (location.search[1] === '/') {
+        var decoded = location.search
+          .slice(1)
+          .split('&')
+          .map(function (segment) {
+            return segment.replace(/~and~/g, '&');
+          })
+          .join('?');
+        window.history.replaceState(
+          null,
+          null,
+          location.pathname.slice(0, -1) + decoded + location.hash,
+        );
+      }
+    })(window.location);
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </head>
 <body class="body-5">

@@ -22,10 +22,8 @@ export default function InfoPage({ services, site }: InfoPageProps) {
     <div className="info-page">
       <SiteNav site={site} hideInfo />
 
-      <div className="title-nav-wrap _65vh">
-        <div className="title-wrap grid info-hero">
-          <p className="title info-hero-title">{site.infoHeroTitle}</p>
-        </div>
+      <div className="info-hero-wrap">
+        <p className="title info-hero-title">{site.infoHeroTitle}</p>
       </div>
 
       <div className="info-wrap">
@@ -40,30 +38,32 @@ export default function InfoPage({ services, site }: InfoPageProps) {
         </div>
       </div>
 
-      <section className="info-colophon">
-        <div className="info-colophon-inner">
-          <span className="navigation-text">Colophon</span>
-          <p className="navigation-text">
-            {site.colophonText}
-            {site.colophonLinkUrl && site.colophonLinkText ? (
-              <>
-                {' '}
-                Before the domain was mine it was{' '}
-                <a href={site.colophonLinkUrl} className="navigation-text underlined">
-                  {site.colophonLinkText}
-                </a>
-              </>
-            ) : null}
-          </p>
-        </div>
-      </section>
+      <div className="info-footer-stack">
+        <section
+          className="info-farewell"
+          style={{ backgroundImage: `url(${farewellBg})` }}
+        >
+          <h1 className="centered-heading">{site.contactHeading}</h1>
+        </section>
 
-      <section
-        className="info-farewell"
-        style={{ backgroundImage: `url(${farewellBg})` }}
-      >
-        <h1 className="centered-heading">{site.contactHeading}</h1>
-      </section>
+        <section className="info-colophon">
+          <div className="info-colophon-inner">
+            <span className="navigation-text">Colophon</span>
+            <p className="navigation-text">
+              {site.colophonText}
+              {site.colophonLinkUrl && site.colophonLinkText ? (
+                <>
+                  {' '}
+                  Before the domain was mine it was{' '}
+                  <a href={site.colophonLinkUrl} className="navigation-text underlined">
+                    {site.colophonLinkText}
+                  </a>
+                </>
+              ) : null}
+            </p>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

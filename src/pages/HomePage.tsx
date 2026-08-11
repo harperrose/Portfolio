@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Lenis from 'lenis';
 import type { Project, SiteSettings } from '../types/content';
+import { CAPABILITIES_LIST } from '../types/content';
 import { buildHomeGallery, type HomeCard } from '../lib/homeGallery';
 import { projectUrl } from '../lib/content';
 import NavGrid from '../components/NavGrid';
@@ -107,6 +108,15 @@ export default function HomePage({ projects, site }: HomePageProps) {
       return setEl.offsetWidth;
     };
 
+    const getSpacerScrollPosition = () => {
+      const sets = trackEl.querySelectorAll<HTMLElement>('.hd-loop-set');
+      const middleSet = sets[1];
+      const spacer = middleSet?.querySelector<HTMLElement>('.hd-loop-spacer');
+      if (!middleSet || !spacer) return setWidthRef.current;
+
+      return middleSet.offsetLeft + spacer.offsetLeft;
+    };
+
     setLayoutMetrics();
     window.addEventListener('resize', setLayoutMetrics);
 
@@ -174,10 +184,11 @@ export default function HomePage({ projects, site }: HomePageProps) {
     });
 
     requestAnimationFrame(() => {
+      setLayoutMetrics();
       measureSetWidth();
       const setWidth = setWidthRef.current;
       if (setWidth) {
-        lenis.scrollTo(setWidth, { immediate: true });
+        lenis.scrollTo(getSpacerScrollPosition(), { immediate: true });
       }
       updateActive();
     });
@@ -263,7 +274,10 @@ export default function HomePage({ projects, site }: HomePageProps) {
         <NavGrid
           site={site}
           variant="home"
+          projects={navProjects}
+          activeProjectId={activeProjectId}
           activeProject={activeProject ?? null}
+          capabilitiesList={[...CAPABILITIES_LIST]}
         />
       </div>
     </div>

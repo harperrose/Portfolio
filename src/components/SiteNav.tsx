@@ -67,7 +67,7 @@ export default function SiteNav({
     <header className={`site-nav${variant === 'case-study' ? ' site-nav--case-study' : ''}`}>
       <div className="site-nav-primary">
         <Link to="/" className="site-nav-link">
-          harper daniel
+          Harper Daniel
         </Link>
         {!hideInfo ? (
           <Link to="/info" className="site-nav-link">

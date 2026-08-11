@@ -19,9 +19,11 @@ function CaseStudyRoute() {
   return <CaseStudyPage project={project} site={content.site} />;
 }
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename || undefined}>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage projects={listedProjects} site={content.site} />} />
