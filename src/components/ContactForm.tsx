@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { resolveAssetPath } from '../lib/assetUrl';
 
 const TALLY_EMBED =
   'https://tally.so/embed/w7k8b2?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1';
@@ -64,7 +65,7 @@ export default function ContactForm({ compact = false, arenaUrl }: ContactFormPr
         </a>
         {arenaUrl ? (
           <a href={arenaUrl} className="w-inline-block" target="_blank" rel="noreferrer">
-            <img src="/images/arena.webp" loading="lazy" alt="" className="icon-contact" />
+            <img src={resolveAssetPath('/images/arena.webp')} loading="lazy" alt="" className="icon-contact" />
           </a>
         ) : null}
       </div>

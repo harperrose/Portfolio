@@ -1,5 +1,6 @@
 import { parse as parseYaml } from 'yaml';
 import siteJson from '../../content/site/settings.json';
+import { resolveAssetPath } from './assetUrl';
 import type {
   ContentBlock,
   HomeGalleryItem,
@@ -45,7 +46,25 @@ function idFromPath(path: string): string {
 
 function normalizeBlocks(blocks: unknown): ContentBlock[] {
   if (!Array.isArray(blocks)) return [];
-  return blocks.filter(Boolean) as ContentBlock[];
+  return blocks.filter(Boolean).map(normalizeBlock);
+}
+
+function normalizeBlock(block: unknown): ContentBlock {
+  const raw = block as ContentBlock;
+  switch (raw._template) {
+    case 'image':
+      return { ...raw, src: resolveAssetPath(raw.src) };
+    case 'doubleImage':
+      return { ...raw, left: resolveAssetPath(raw.left), right: resolveAssetPath(raw.right) };
+    case 'beforeAfter':
+      return {
+        ...raw,
+        before: resolveAssetPath(raw.before),
+        after: resolveAssetPath(raw.after),
+      };
+    default:
+      return raw;
+  }
 }
 
 function normalizePanels(panels: unknown): ProjectPanel[] {
@@ -65,13 +84,13 @@ function normalizeHomeGallery(items: unknown): HomeGalleryItem[] {
       const layout = String(raw.layout ?? 'single');
 
       if (layout === 'stack') {
-        const imageTop = String(raw.imageTop ?? '');
-        const imageBottom = String(raw.imageBottom ?? '');
+        const imageTop = resolveAssetPath(String(raw.imageTop ?? ''));
+        const imageBottom = resolveAssetPath(String(raw.imageBottom ?? ''));
         if (!imageTop || !imageBottom) return null;
         return { layout: 'stack' as const, imageTop, imageBottom };
       }
 
-      const image = String(raw.image ?? '');
+      const image = resolveAssetPath(String(raw.image ?? ''));
       if (!image) return null;
 
       return {
@@ -87,7 +106,7 @@ function normalizeProject(raw: Record<string, unknown>, path: string): Project {
     id: idFromPath(path),
     title: String(raw.title ?? ''),
     slug: String(raw.slug ?? idFromPath(path)),
-    coverImage: String(raw.coverImage ?? ''),
+    coverImage: resolveAssetPath(String(raw.coverImage ?? '')),
     quote: raw.quote ? String(raw.quote) : undefined,
     summary: raw.summary ? String(raw.summary) : undefined,
     heroDescription: raw.heroDescription ? String(raw.heroDescription) : undefined,
@@ -106,7 +125,7 @@ function normalizeProject(raw: Record<string, unknown>, path: string): Project {
 function normalizeServiceItem(item: Record<string, unknown>): ServiceItem {
   return {
     title: String(item.title ?? ''),
-    image: String(item.image ?? ''),
+    image: resolveAssetPath(String(item.image ?? '')),
     url: item.url ? String(item.url) : undefined,
     caseStudySlug: refToSlug(item.caseStudy as string | undefined),
   };
@@ -139,13 +158,23 @@ function loadServices(): Service[] {
     .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 }
 
+function normalizeSiteSettings(raw: SiteSettings): SiteSettings {
+  return {
+    ...raw,
+    homeBackgroundImage: raw.homeBackgroundImage
+      ? resolveAssetPath(raw.homeBackgroundImage)
+      : undefined,
+    infoHeroImage: raw.infoHeroImage ? resolveAssetPath(raw.infoHeroImage) : undefined,
+  };
+}
+
 let cachedContent: SiteContent | null = null;
 
 export function getSiteContent(): SiteContent {
   if (cachedContent) return cachedContent;
 
   cachedContent = {
-    site: siteJson as SiteSettings,
+    site: normalizeSiteSettings(siteJson as SiteSettings),
     projects: loadProjects(),
     services: loadServices(),
   };

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { Service, SiteSettings } from '../types/content';
 import SiteNav from '../components/SiteNav';
 import ServiceCarousel from '../components/ServiceCarousel';
+import { resolveAssetPath } from '../lib/assetUrl';
 
 type InfoPageProps = {
   services: Service[];
@@ -9,7 +10,7 @@ type InfoPageProps = {
 };
 
 export default function InfoPage({ services, site }: InfoPageProps) {
-  const farewellBg = site.homeBackgroundImage ?? '/images/background.png';
+  const farewellBg = site.homeBackgroundImage ?? resolveAssetPath('/images/background.png');
 
   useEffect(() => {
     document.body.classList.add('body-6', 'info-route');

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Lenis from 'lenis';
 import type { Project, SiteSettings } from '../types/content';
 import { CAPABILITIES_LIST } from '../types/content';
+import { resolveAssetPath } from '../lib/assetUrl';
 import { buildHomeGallery, type HomeCard } from '../lib/homeGallery';
 import { projectUrl } from '../lib/content';
 import NavGrid from '../components/NavGrid';
@@ -62,7 +63,7 @@ export default function HomePage({ projects, site }: HomePageProps) {
 
   const galleryCards = useMemo(() => buildHomeGallery(navProjects), [navProjects]);
   const loopSets = 3;
-  const backgroundImage = site.homeBackgroundImage ?? '/images/background.png';
+  const backgroundImage = site.homeBackgroundImage ?? resolveAssetPath('/images/background.png');
 
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [happyReveal, setHappyReveal] = useState(false);
