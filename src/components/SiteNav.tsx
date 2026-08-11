@@ -1,26 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { ProjectPanel } from '../types/content';
+import type { SiteSettings } from '../types/content';
+import ContactMenu from './ContactMenu';
 
 type SiteNavProps = {
+  site: SiteSettings;
   projectTitle?: string;
   panels?: ProjectPanel[];
   activeIndex?: number;
   segmentProgress?: number[];
   onSectionClick?: (index: number) => void;
-  contactHref?: string;
   showContact?: boolean;
+  hideInfo?: boolean;
   variant?: 'default' | 'case-study';
 };
 
 export default function SiteNav({
+  site,
   projectTitle,
   panels = [],
   activeIndex = 0,
   segmentProgress = [],
   onSectionClick,
-  contactHref = '#contact',
   showContact = true,
+  hideInfo = false,
   variant = 'default',
 }: SiteNavProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -63,16 +67,14 @@ export default function SiteNav({
     <header className={`site-nav${variant === 'case-study' ? ' site-nav--case-study' : ''}`}>
       <div className="site-nav-primary">
         <Link to="/" className="site-nav-link">
-          Home
+          harper daniel
         </Link>
-        <Link to="/info" className="site-nav-link">
-          Info
-        </Link>
-        {showContact ? (
-          <a href={contactHref} className="site-nav-link">
-            Contact
-          </a>
+        {!hideInfo ? (
+          <Link to="/info" className="site-nav-link">
+            Info
+          </Link>
         ) : null}
+        {showContact ? <ContactMenu site={site} variant="nav" /> : null}
       </div>
 
       {showProgress ? (

@@ -7,29 +7,49 @@ type CaseStudySectionProps = {
   index: number;
   title: string;
   intro?: string;
+  homeBlurb?: string;
+  heroDescription?: string;
   blocks: ContentBlock[];
 };
 
 const CaseStudySection = forwardRef<HTMLElement, CaseStudySectionProps>(
-  function CaseStudySection({ index, title, intro, blocks }, ref) {
+  function CaseStudySection(
+    { index, title, intro, homeBlurb, heroDescription, blocks },
+    ref,
+  ) {
     const paragraphs = getPanelParagraphs(blocks);
     const mediaBlocks = getPanelMediaBlocks(blocks);
+    const isHero = index === 0;
 
     return (
       <section ref={ref} className="cs-section" data-cs-section={index}>
         <div className="cs-section-wrap">
           <div className="cs-section-inner">
-            <header className="cs-section-header">
-              <h2 className="cs-section-title">{title}</h2>
-              {intro ? <p className="cs-section-intro">{intro}</p> : null}
-              {paragraphs.map((text, paragraphIndex) => (
-                <p
-                  key={`${index}-paragraph-${paragraphIndex}`}
-                  className="cs-section-text"
-                  dangerouslySetInnerHTML={{ __html: text.replace(/\n/g, '<br>') }}
-                />
-              ))}
-            </header>
+            {isHero ? (
+              <header className="cs-hero">
+                <h1 className="cs-hero-title">{title}</h1>
+                <div className="cs-hero-columns">
+                  {homeBlurb ? <p className="cs-section-text">{homeBlurb}</p> : null}
+                  {heroDescription ? (
+                    <p className="cs-section-text">{heroDescription}</p>
+                  ) : intro ? (
+                    <p className="cs-section-text">{intro}</p>
+                  ) : null}
+                </div>
+              </header>
+            ) : (
+              <header className="cs-section-header">
+                <h2 className="cs-section-title">{title}</h2>
+                {intro ? <p className="cs-section-intro">{intro}</p> : null}
+                {paragraphs.map((text, paragraphIndex) => (
+                  <p
+                    key={`${index}-paragraph-${paragraphIndex}`}
+                    className="cs-section-text"
+                    dangerouslySetInnerHTML={{ __html: text.replace(/\n/g, '<br>') }}
+                  />
+                ))}
+              </header>
+            )}
 
             {mediaBlocks.length ? (
               <div className="cs-media-grid">
@@ -40,6 +60,18 @@ const CaseStudySection = forwardRef<HTMLElement, CaseStudySectionProps>(
                   >
                     <BlockRenderer block={block} imageClassName="cs-img" />
                   </div>
+                ))}
+              </div>
+            ) : null}
+
+            {isHero && paragraphs.length ? (
+              <div className="cs-section-copy">
+                {paragraphs.map((text, paragraphIndex) => (
+                  <p
+                    key={`${index}-hero-paragraph-${paragraphIndex}`}
+                    className="cs-section-text"
+                    dangerouslySetInnerHTML={{ __html: text.replace(/\n/g, '<br>') }}
+                  />
                 ))}
               </div>
             ) : null}

@@ -235,6 +235,14 @@ export default defineConfig({
           },
           {
             type: "string",
+            name: "heroDescription",
+            label: "Case Study Hero Description",
+            description:
+              "Second paragraph shown in the case study hero, below the site home intro blurb.",
+            ui: { component: "textarea" },
+          },
+          {
+            type: "string",
             name: "capabilities",
             label: "Capabilities",
             list: true,

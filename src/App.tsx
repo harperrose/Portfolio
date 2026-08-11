@@ -16,7 +16,7 @@ function CaseStudyRoute() {
     return <Navigate to="/" replace />;
   }
 
-  return <CaseStudyPage project={project} projects={listedProjects} site={content.site} />;
+  return <CaseStudyPage project={project} site={content.site} />;
 }
 
 function App() {
@@ -27,13 +27,7 @@ function App() {
         <Route path="/" element={<HomePage projects={listedProjects} site={content.site} />} />
         <Route
           path="/info"
-          element={
-            <InfoPage
-              projects={listedProjects}
-              services={content.services}
-              site={content.site}
-            />
-          }
+          element={<InfoPage services={content.services} site={content.site} />}
         />
         <Route path="/:slug" element={<CaseStudyRoute />} />
       </Routes>

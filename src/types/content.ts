@@ -23,6 +23,7 @@ export type Project = {
   coverImage: string;
   quote?: string;
   summary?: string;
+  heroDescription?: string;
   capabilities: string[];
   order?: number;
   draft?: boolean;

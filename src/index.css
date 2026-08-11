@@ -16,6 +16,7 @@ body.body-6 #root {
 
 body {
   margin: 0;
+  background: var(--site-blue);
 }
 
 #root {

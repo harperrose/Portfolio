@@ -90,6 +90,7 @@ function normalizeProject(raw: Record<string, unknown>, path: string): Project {
     coverImage: String(raw.coverImage ?? ''),
     quote: raw.quote ? String(raw.quote) : undefined,
     summary: raw.summary ? String(raw.summary) : undefined,
+    heroDescription: raw.heroDescription ? String(raw.heroDescription) : undefined,
     capabilities: Array.isArray(raw.capabilities)
       ? raw.capabilities.map(String)
       : [],

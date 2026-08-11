@@ -4,11 +4,9 @@ import type { Project, SiteSettings } from '../types/content';
 import { resolveNextProject, projectUrl } from '../lib/content';
 import SiteNav from '../components/SiteNav';
 import CaseStudySection from '../components/CaseStudySection';
-import SiteFooterLinks from '../components/SiteFooterLinks';
 
 type CaseStudyPageProps = {
   project: Project;
-  projects: Project[];
   site: SiteSettings;
 };
 
@@ -16,7 +14,7 @@ function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
-export default function CaseStudyPage({ project, projects, site }: CaseStudyPageProps) {
+export default function CaseStudyPage({ project, site }: CaseStudyPageProps) {
   const panels = project.panels.length ? project.panels : [{ label: 'Overview', blocks: [] }];
   const nextProject = resolveNextProject(project);
 
@@ -91,6 +89,7 @@ export default function CaseStudyPage({ project, projects, site }: CaseStudyPage
   return (
     <div className="case-study-page">
       <SiteNav
+        site={site}
         projectTitle={project.title}
         panels={panels}
         activeIndex={activeIndex}
@@ -110,57 +109,26 @@ export default function CaseStudyPage({ project, projects, site }: CaseStudyPage
             index={index}
             title={section.title}
             intro={section.intro}
+            homeBlurb={index === 0 ? site.homeIntroTitle : undefined}
+            heroDescription={
+              index === 0 ? project.heroDescription ?? project.summary : undefined
+            }
             blocks={section.blocks}
           />
         ))}
       </main>
 
-      <footer id="contact" className="case-study-footer info-contact-section">
-        <div className="info-contact-static div-block-7">
-          <div className="navigation-item footer">
-            <a href="#" className="navigation-text centered">
-              Colophon
-            </a>
-            <div className="navigation-text">
-              {site.colophonText}
-              {site.colophonLinkUrl && site.colophonLinkText ? (
-                <>
-                  <br />
-                  <br />
-                  Before the domain was mine it was{' '}
-                  <a href={site.colophonLinkUrl} className="navigation-text underlined">
-                    {site.colophonLinkText}
-                  </a>
-                </>
-              ) : null}
+      {nextProject ? (
+        <div className="next-project">
+          <Link to={projectUrl(nextProject.slug)} className="next-project-link">
+            <img loading="lazy" alt="" src={nextProject.coverImage} className="next-project-image" />
+            <div className="next-project-copy">
+              <div className="next-project-label">Next Project</div>
+              <div className="next-project-title">{nextProject.title}</div>
             </div>
-          </div>
-
-          <div className="navigation-item footer">
-            <SiteFooterLinks site={site} className="info-footer-links" />
-            {nextProject ? (
-              <Link to={projectUrl(nextProject.slug)} className="w-inline-block">
-                <p className="navigation-text centered">Next Project</p>
-                <img loading="lazy" src={nextProject.coverImage} alt="" className="image-full-width" />
-                <p className="navigation-text padding-top">{nextProject.title}</p>
-                <div className="dividing-line" />
-              </Link>
-            ) : null}
-            {projects.map((listedProject) => (
-              <Link key={listedProject.id} to={projectUrl(listedProject.slug)} className="navigation-text">
-                {listedProject.title}
-              </Link>
-            ))}
-          </div>
-
-          <div className="navigation-item footer">
-            <Link to="/" className="navigation-text">
-              Work
-            </Link>
-            <span className="navigation-text">{site.copyrightText}</span>
-          </div>
+          </Link>
         </div>
-      </footer>
+      ) : null}
     </div>
   );
 }
