@@ -98,7 +98,7 @@ export default function HomePage({ projects, site }: HomePageProps) {
 
       if (!gridEl) return;
       const gridTop = gridEl.getBoundingClientRect().top;
-      const height = Math.max(80, Math.round(gridTop - topBarBottom - 16));
+      const height = Math.max(80, Math.round(gridTop - 16));
       document.documentElement.style.setProperty('--card-h', `${height}px`);
     };
 
@@ -164,7 +164,6 @@ export default function HomePage({ projects, site }: HomePageProps) {
       });
 
       setActiveProjectId(anyVisible && nearest ? nearest : null);
-      setLayoutMetrics();
     };
 
     const wrapScroll = () => {

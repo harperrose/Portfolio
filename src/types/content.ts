@@ -1,9 +1,25 @@
 export type ContentBlock =
-  | { _template: 'image'; src: string; alt?: string }
+  | { _template: 'image'; src: string; alt?: string; caption?: string }
   | { _template: 'paragraph'; text: string }
-  | { _template: 'doubleImage'; left: string; right: string }
+  | {
+      _template: 'doubleImage';
+      left: string;
+      right: string;
+      leftCaption?: string;
+      rightCaption?: string;
+    }
+  | {
+      _template: 'gallery';
+      items: Array<{ image: string; caption?: string }>;
+    }
   | { _template: 'iframe'; src: string; height?: string }
-  | { _template: 'beforeAfter'; before: string; after: string; alt?: string };
+  | {
+      _template: 'beforeAfter';
+      before: string;
+      after: string;
+      alt?: string;
+      caption?: string;
+    };
 
 export type HomeGalleryLayout = 'single' | 'wide' | 'stack';
 
@@ -24,6 +40,7 @@ export type Project = {
   quote?: string;
   summary?: string;
   heroDescription?: string;
+  heroSecondaryDescription?: string;
   capabilities: string[];
   order?: number;
   draft?: boolean;

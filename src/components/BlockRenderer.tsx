@@ -9,7 +9,12 @@ type BlockRendererProps = {
 export default function BlockRenderer({ block, imageClassName = 'img' }: BlockRendererProps) {
   switch (block._template) {
     case 'image':
-      return <img src={block.src} loading="lazy" alt={block.alt ?? ''} className={imageClassName} />;
+      return (
+        <figure className="cs-media-figure">
+          <img src={block.src} loading="lazy" alt={block.alt ?? ''} className={imageClassName} />
+          {block.caption ? <figcaption className="cs-media-caption">{block.caption}</figcaption> : null}
+        </figure>
+      );
     case 'paragraph':
       return (
         <p
@@ -20,12 +25,42 @@ export default function BlockRenderer({ block, imageClassName = 'img' }: BlockRe
     case 'doubleImage':
       return (
         <div className="double">
-          <img src={block.left} loading="lazy" alt="" className={`${imageClassName} double`} />
-          <img src={block.right} loading="lazy" alt="" className={`${imageClassName} double`} />
+          <figure className="cs-media-figure">
+            <img src={block.left} loading="lazy" alt="" className={`${imageClassName} double`} />
+            {block.leftCaption ? (
+              <figcaption className="cs-media-caption">{block.leftCaption}</figcaption>
+            ) : null}
+          </figure>
+          <figure className="cs-media-figure">
+            <img src={block.right} loading="lazy" alt="" className={`${imageClassName} double`} />
+            {block.rightCaption ? (
+              <figcaption className="cs-media-caption">{block.rightCaption}</figcaption>
+            ) : null}
+          </figure>
+        </div>
+      );
+    case 'gallery':
+      return (
+        <div className="cs-gallery" role="region" aria-label="Image gallery">
+          <div className="cs-gallery-track">
+            {block.items.map((item, index) => (
+              <figure className="cs-gallery-item" key={`${item.image}-${index}`}>
+                <img src={item.image} loading="lazy" alt="" className={imageClassName} />
+                {item.caption ? (
+                  <figcaption className="cs-media-caption">{item.caption}</figcaption>
+                ) : null}
+              </figure>
+            ))}
+          </div>
         </div>
       );
     case 'beforeAfter':
-      return <BeforeAfterSlider before={block.before} after={block.after} alt={block.alt} />;
+      return (
+        <figure className="cs-media-figure">
+          <BeforeAfterSlider before={block.before} after={block.after} alt={block.alt} />
+          {block.caption ? <figcaption className="cs-media-caption">{block.caption}</figcaption> : null}
+        </figure>
+      );
     case 'iframe':
       return (
         <div className="w-embed w-iframe">

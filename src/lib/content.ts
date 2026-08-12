@@ -62,6 +62,16 @@ function normalizeBlock(block: unknown): ContentBlock {
         before: resolveAssetPath(raw.before),
         after: resolveAssetPath(raw.after),
       };
+    case 'gallery':
+      return {
+        ...raw,
+        items: Array.isArray(raw.items)
+          ? raw.items.map((item) => ({
+              ...item,
+              image: resolveAssetPath(item.image),
+            }))
+          : [],
+      };
     default:
       return raw;
   }
@@ -110,6 +120,9 @@ function normalizeProject(raw: Record<string, unknown>, path: string): Project {
     quote: raw.quote ? String(raw.quote) : undefined,
     summary: raw.summary ? String(raw.summary) : undefined,
     heroDescription: raw.heroDescription ? String(raw.heroDescription) : undefined,
+    heroSecondaryDescription: raw.heroSecondaryDescription
+      ? String(raw.heroSecondaryDescription)
+      : undefined,
     capabilities: Array.isArray(raw.capabilities)
       ? raw.capabilities.map(String)
       : [],

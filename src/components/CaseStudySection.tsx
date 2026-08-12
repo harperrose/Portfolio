@@ -7,14 +7,14 @@ type CaseStudySectionProps = {
   index: number;
   title: string;
   intro?: string;
-  homeBlurb?: string;
   heroDescription?: string;
+  heroSecondaryDescription?: string;
   blocks: ContentBlock[];
 };
 
 const CaseStudySection = forwardRef<HTMLElement, CaseStudySectionProps>(
   function CaseStudySection(
-    { index, title, intro, homeBlurb, heroDescription, blocks },
+    { index, title, intro, heroDescription, heroSecondaryDescription, blocks },
     ref,
   ) {
     const paragraphs = getPanelParagraphs(blocks);
@@ -29,11 +29,13 @@ const CaseStudySection = forwardRef<HTMLElement, CaseStudySectionProps>(
               <header className="cs-hero">
                 <h1 className="cs-hero-title">{title}</h1>
                 <div className="cs-hero-columns">
-                  {homeBlurb ? <p className="cs-section-text">{homeBlurb}</p> : null}
                   {heroDescription ? (
                     <p className="cs-section-text">{heroDescription}</p>
                   ) : intro ? (
                     <p className="cs-section-text">{intro}</p>
+                  ) : null}
+                  {heroSecondaryDescription ? (
+                    <p className="cs-section-text">{heroSecondaryDescription}</p>
                   ) : null}
                 </div>
               </header>

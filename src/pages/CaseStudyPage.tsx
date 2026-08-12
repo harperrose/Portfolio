@@ -55,6 +55,12 @@ export default function CaseStudyPage({ project, site }: CaseStudyPageProps) {
       if (viewportAnchor >= sectionBottom) return 1;
       return clamp((viewportAnchor - sectionTop) / Math.max(section.offsetHeight, 1));
     });
+    const atPageBottom =
+      window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    if (atPageBottom) {
+      progress[progress.length - 1] = 1;
+      nextActive = sections.length - 1;
+    }
 
     setActiveIndex(nextActive);
     setSegmentProgress(progress);
@@ -109,9 +115,11 @@ export default function CaseStudyPage({ project, site }: CaseStudyPageProps) {
             index={index}
             title={section.title}
             intro={section.intro}
-            homeBlurb={index === 0 ? site.homeIntroTitle : undefined}
             heroDescription={
               index === 0 ? project.heroDescription ?? project.summary : undefined
+            }
+            heroSecondaryDescription={
+              index === 0 ? project.heroSecondaryDescription : undefined
             }
             blocks={section.blocks}
           />
@@ -119,12 +127,17 @@ export default function CaseStudyPage({ project, site }: CaseStudyPageProps) {
       </main>
 
       {nextProject ? (
-        <div className="next-project">
-          <Link to={projectUrl(nextProject.slug)} className="next-project-link">
-            <img loading="lazy" alt="" src={nextProject.coverImage} className="next-project-image" />
-            <div className="next-project-copy">
-              <div className="next-project-label">Next Project</div>
-              <div className="next-project-title">{nextProject.title}</div>
+        <div className="cs-next-project">
+          <Link to={projectUrl(nextProject.slug)} className="cs-next-project-link">
+            <img
+              loading="lazy"
+              alt=""
+              src={nextProject.coverImage}
+              className="cs-next-project-image"
+            />
+            <div className="cs-next-project-copy">
+              <div className="cs-next-project-label">Next Project</div>
+              <div className="cs-next-project-title">{nextProject.title}</div>
             </div>
           </Link>
         </div>

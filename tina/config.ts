@@ -13,7 +13,7 @@ export default defineConfig({
   clientId:
     process.env.TINA_PUBLIC_CLIENT_ID ||
     process.env.VITE_TINA_CLIENT_ID ||
-    null,
+    "731fc6c1-4410-4e60-91d0-cafb509cd17a",
   token: process.env.TINA_TOKEN || null,
   build: {
     outputFolder: "admin",
@@ -236,9 +236,17 @@ export default defineConfig({
           {
             type: "string",
             name: "heroDescription",
-            label: "Case Study Hero Description",
+            label: "Case Study Hero Left Paragraph",
             description:
-              "Second paragraph shown in the case study hero, below the site home intro blurb.",
+              "First paragraph shown below the project title.",
+            ui: { component: "textarea" },
+          },
+          {
+            type: "string",
+            name: "heroSecondaryDescription",
+            label: "Case Study Hero Right Paragraph",
+            description:
+              "Second paragraph shown to the right of the hero left paragraph.",
             ui: { component: "textarea" },
           },
           {
@@ -353,6 +361,12 @@ export default defineConfig({
                         required: true,
                       },
                       { type: "string", name: "alt", label: "Alt Text" },
+                      {
+                        type: "string",
+                        name: "caption",
+                        label: "Caption / Description",
+                        ui: { component: "textarea" },
+                      },
                     ],
                   },
                   {
@@ -383,6 +397,49 @@ export default defineConfig({
                         name: "right",
                         label: "Right Image",
                         required: true,
+                      },
+                      {
+                        type: "string",
+                        name: "leftCaption",
+                        label: "Left Image Caption",
+                        ui: { component: "textarea" },
+                      },
+                      {
+                        type: "string",
+                        name: "rightCaption",
+                        label: "Right Image Caption",
+                        ui: { component: "textarea" },
+                      },
+                    ],
+                  },
+                  {
+                    name: "gallery",
+                    label: "Image Gallery",
+                    fields: [
+                      {
+                        type: "object",
+                        name: "items",
+                        label: "Gallery Images",
+                        list: true,
+                        ui: {
+                          itemProps: (item) => ({
+                            label: item?.caption || "Gallery image",
+                          }),
+                        },
+                        fields: [
+                          {
+                            type: "image",
+                            name: "image",
+                            label: "Image",
+                            required: true,
+                          },
+                          {
+                            type: "string",
+                            name: "caption",
+                            label: "Caption / Description",
+                            ui: { component: "textarea" },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -421,6 +478,12 @@ export default defineConfig({
                         required: true,
                       },
                       { type: "string", name: "alt", label: "Alt Text" },
+                      {
+                        type: "string",
+                        name: "caption",
+                        label: "Caption / Description",
+                        ui: { component: "textarea" },
+                      },
                     ],
                   },
                 ],
