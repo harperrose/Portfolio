@@ -166,6 +166,18 @@
   pointer-events: all;
 }
 
+#hd-grid.hd-nav-home.is-spacer {
+  pointer-events: none;
+}
+
+#hd-grid.hd-nav-home.is-spacer .hd-col {
+  min-height: 36px;
+}
+
+#hd-grid.hd-nav-home.is-spacer .hd-col > * {
+  display: none !important;
+}
+
 #hd-grid.hd-nav-info {
   grid-template-columns: 1fr 2fr 1fr 2fr;
 }
@@ -453,7 +465,7 @@ body.home-route.body-5 {
 
 .hd-loop-spacer {
   flex-shrink: 0;
-  width: 100vw;
+  width: 120vw;
   height: 1px;
 }
 

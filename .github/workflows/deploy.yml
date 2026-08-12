@@ -17,6 +17,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TINA_PUBLIC_CLIENT_ID: 731fc6c1-4410-4e60-91d0-cafb509cd17a
+      VITE_TINA_CLIENT_ID: 731fc6c1-4410-4e60-91d0-cafb509cd17a
+      TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+      TINA_BRANCH: cursor/tina-webflow-integration
+      TINA_CMS_BASE_PATH: Portfolio
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +37,7 @@ jobs:
         run: npm ci
 
       - name: Build site
-        run: npm run build:local
+        run: npm run build:pages
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

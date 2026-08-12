@@ -9,6 +9,7 @@ type NavGridProps = {
   activeProjectId?: string | null;
   activeProject?: Project | null;
   capabilitiesList?: string[];
+  galleryState?: 'projects' | 'spacer';
 };
 
 export default function NavGrid({
@@ -18,6 +19,7 @@ export default function NavGrid({
   activeProjectId = null,
   activeProject = null,
   capabilitiesList = [],
+  galleryState = 'projects',
 }: NavGridProps) {
   if (variant === 'home') {
     const description = activeProject?.quote?.trim() || activeProject?.summary?.trim() || '';
@@ -29,7 +31,8 @@ export default function NavGrid({
     return (
       <div
         id="hd-grid"
-        className={`hd-nav-home${activeProjectId ? ' is-visible' : ''}`}
+        className={`hd-nav-home is-visible is-${galleryState}`}
+        data-gallery-state={galleryState}
       >
         <div className="hd-col hd-col-projects" id="hd-col-projects">
           <ul id="hd-projects-list" className="hd-projects-inline">

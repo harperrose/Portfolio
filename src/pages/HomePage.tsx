@@ -66,6 +66,7 @@ export default function HomePage({ projects, site }: HomePageProps) {
   const backgroundImage = site.homeBackgroundImage ?? resolveAssetPath('/images/background.png');
 
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const [galleryState, setGalleryState] = useState<'projects' | 'spacer'>('spacer');
   const [happyReveal, setHappyReveal] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -119,7 +120,6 @@ export default function HomePage({ projects, site }: HomePageProps) {
     };
 
     setLayoutMetrics();
-    window.addEventListener('resize', setLayoutMetrics);
 
     const lenis = new Lenis({
       wrapper: scrollEl,
@@ -151,20 +151,28 @@ export default function HomePage({ projects, site }: HomePageProps) {
       const vpCenter = vw / 2;
       let nearest: string | null = null;
       let minDist = Infinity;
-      let anyVisible = false;
 
       trackEl.querySelectorAll('.hd-card').forEach((card) => {
         const rect = card.getBoundingClientRect();
+        if (rect.right <= 0 || rect.left >= vw) return;
+
         const dist = Math.abs(vpCenter - (rect.left + rect.width / 2));
         if (dist < minDist) {
           minDist = dist;
           nearest = (card as HTMLElement).dataset.projectId ?? null;
         }
-        if (rect.right > 0 && rect.left < vw) anyVisible = true;
       });
 
-      setActiveProjectId(anyVisible && nearest ? nearest : null);
+      setActiveProjectId(nearest);
+      setGalleryState(nearest ? 'projects' : 'spacer');
     };
+
+    const handleResize = () => {
+      setLayoutMetrics();
+      measureSetWidth();
+      updateActive();
+    };
+    window.addEventListener('resize', handleResize);
 
     const wrapScroll = () => {
       const setWidth = setWidthRef.current || measureSetWidth();
@@ -206,7 +214,7 @@ export default function HomePage({ projects, site }: HomePageProps) {
       lenis.destroy();
       scrollEl.removeEventListener('wheel', handleWheel);
       scrollEl.removeEventListener('scroll', dismissCursor);
-      window.removeEventListener('resize', setLayoutMetrics);
+      window.removeEventListener('resize', handleResize);
     };
   }, [galleryCards]);
 
@@ -278,6 +286,7 @@ export default function HomePage({ projects, site }: HomePageProps) {
           activeProjectId={activeProjectId}
           activeProject={activeProject ?? null}
           capabilitiesList={[...CAPABILITIES_LIST]}
+          galleryState={galleryState}
         />
       </div>
     </div>

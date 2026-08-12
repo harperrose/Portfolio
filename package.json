@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tinacms dev -c \"vite\"",
     "build": "tinacms build && tsc -b && vite build",
+    "build:pages": "tinacms build --content=local --skip-cloud-checks --skip-indexing && tsc -b && vite build",
     "dev:local": "TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"vite\"",
     "build:local": "TINA_PUBLIC_IS_LOCAL=true tinacms build --local --skip-cloud-checks --skip-indexing && tsc -b && vite build",
     "lint": "eslint .",

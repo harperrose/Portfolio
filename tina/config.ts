@@ -9,7 +9,11 @@ const capabilityOptions = [
 ];
 
 export default defineConfig({
-  branch: process.env.TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || "main",
+  branch:
+    process.env.TINA_BRANCH ||
+    process.env.GITHUB_REF_NAME ||
+    process.env.VERCEL_GIT_COMMIT_REF ||
+    "cursor/tina-webflow-integration",
   clientId:
     process.env.TINA_PUBLIC_CLIENT_ID ||
     process.env.VITE_TINA_CLIENT_ID ||
@@ -18,6 +22,7 @@ export default defineConfig({
   build: {
     outputFolder: "admin",
     publicFolder: "public",
+    basePath: process.env.TINA_CMS_BASE_PATH || "",
   },
   media: {
     tina: {
